@@ -3,14 +3,9 @@ ROM.v
 Wrapper.v
 Wrapper_tb.v
 alu.v
+behavioral.v
 divider.v
 multdiv.v
 multiplier.v
 processor.v
 regfile.v
-./Provided Behavioral Components/alu.v
-./Provided Behavioral Components/multdiv.v
-./Provided Behavioral Components/multiplier.v
-./Provided Behavioral Components/divider.v
-./Provided Behavioral Components/dffe_ref.v
-./Provided Behavioral Components/regfile.v

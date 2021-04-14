@@ -16,8 +16,8 @@ addi $r10, $r10, 1  # 1
 div $r4, $r10, $r3 # 1/T0
 div $r5, $r10, $r29 # 1/T
 sub $r6, $r5, $r4 # 1/T-1/T0
-mul $r7, $r1m $r6 # B*(1/T-1/T0)
-# custom instruction for exponential ni r8
+mul $r7, $r10 $r6 # B*(1/T-1/T0)
+# insert working custom instruction for exponential in r8
 
 mul $r9, $r8, $r2 # r0 holds R
 
