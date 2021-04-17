@@ -24,14 +24,16 @@
  *
  **/
 
-module Wrapper (clock, reset);
-	input clock, reset;
-
-	wire rwe, mwe;
-	wire[4:0] rd, rs1, rs2;
-	wire[31:0] instAddr, instData, 
-		rData, regA, regB,
-		memAddr, memDataIn, memDataOut;
+module Wrapper (clock, reset, in0, in1, in2, in3, in4, in5, in6, in7);
+   input clock, reset, in0, in1, in2, in3, in4, in5, in6, in7;
+   wire     out;
+   
+   
+   wire       rwe, mwe;
+   wire [4:0] rd, rs1, rs2;
+   wire [31:0] instAddr, instData, 
+	       rData, regA, regB,
+	       memAddr, memDataIn, memDataOut;
 
 
 	// ADD YOUR MEMORY FILE HERE
@@ -50,7 +52,9 @@ module Wrapper (clock, reset);
 									
 		// RAM
 		.wren(mwe), .address_dmem(memAddr), 
-		.data(memDataIn), .q_dmem(memDataOut)); 
+		.data(memDataIn), .q_dmem(memDataOut),
+
+		      .in0(in0), .in1(in1), .in2(in2), .in3(in3), .in4(in4), .in5(in5), .in6(in6), .in7(in7), .out(out)); 
 	
 	// Instruction Memory (ROM)
 	ROM #(.MEMFILE({INSTR_FILE, ".mem"}))
