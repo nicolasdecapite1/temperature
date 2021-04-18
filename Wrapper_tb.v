@@ -43,7 +43,7 @@ module Wrapper_tb #(parameter FILE = "nop");
 	localparam DEFAULT_CYCLES = 255;
 
 	// Inputs to the processor
-	reg clock = 0, reset = 0;
+	reg clock = 0, reset = 0, in0=1, in1=0, in2=0, in3=1, in4=1, in5=0, in6=0, in7=1;
 
 	// I/O for the processor
 	wire rwe, mwe;
@@ -78,7 +78,10 @@ module Wrapper_tb #(parameter FILE = "nop");
 	integer errors = 0,
 			cycles = 0,
 			reg_to_test = 0;
-
+   wire 	out;
+   wire [31:0] 	thermistorVoltage;
+ 
+    
 	// Main Processing Unit
 	processor CPU(.clock(clock), .reset(reset), 
 								
@@ -92,7 +95,8 @@ module Wrapper_tb #(parameter FILE = "nop");
 									
 		// RAM
 		.wren(mwe), .address_dmem(memAddr), 
-		.data(memDataIn), .q_dmem(memDataOut)); 
+		.data(memDataIn), .q_dmem(memDataOut), 
+		      .in0(in0), .in1(in1), .in2(in2), .in3(in3), .in4(in4), .in5(in5), .in6(in6), .in7(in7), .out(out), .thermistorVoltage(thermistorVoltage)); 
 	
 	// Instruction Memory (ROM)
 	ROM #(.MEMFILE({DIR, MEM_DIR, FILE, ".mem"}))
@@ -246,6 +250,7 @@ module Wrapper_tb #(parameter FILE = "nop");
 			$display("\nFinished %0d cycle%c with %0d error%c", cycles, "s"*(cycles != 1), errors, "s"*(errors != 1));
 		else 
 			$display("Finished %0d cycle%c", cycles, "s"*(cycles != 1));
+	   $display("ThermistorVoltage", thermistorVoltage);
 
 		#100;
 		$finish;

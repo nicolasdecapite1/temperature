@@ -37,7 +37,7 @@ module Wrapper (clock, reset, in0, in1, in2, in3, in4, in5, in6, in7);
 
 
 	// ADD YOUR MEMORY FILE HERE
-	localparam INSTR_FILE = "/Users/nicolasdecapite/Desktop/temperature/Test Files/Memory Files/";
+	localparam INSTR_FILE = "/testingInputsOutputs";
 	
 	// Main Processing Unit
 	processor CPU(.clock(clock), .reset(reset), 

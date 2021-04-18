@@ -40,13 +40,14 @@ module processor(
     data_writeReg,                  // O: Data to write to for RegFile
     data_readRegA,                  // I: Data from port A of RegFile
     data_readRegB,
-    in0, in1, in2, in3, in4, in5, in6, in7, out                   // I: Data from port B of RegFile
+    in0, in1, in2, in3, in4, in5, in6, in7, out, thermistorVoltage                   // I: Data from port B of RegFile
 	);
 
    // Control signals
    input clock, reset, in0, in1, in2, in3, in4, in5, in6, in7;
    output out;
-   wire   outInt;
+   wire   outInt, outInt2;
+   output [31:0] thermistorVoltage;
    
    wire [31:0] inputFromThermistor;
    
@@ -59,7 +60,11 @@ module processor(
    assign inputFromThermistor[1] = in1;
    assign inputFromThermistor[0] = in0;
    assign inputFromThermistor[31:8] = 24'b0;
-   assign outInt =0;
+
+  
+   assign thermistorVoltage = (inputFromThermistor * 5) / 255;
+  // assign outInt =0;
+   
    
    // Imem
    output [31:0] address_imem; //address of the PC (out of PC)
@@ -352,7 +357,7 @@ module processor(
    assign ctrl_writeRegInt = isSWinst? 5'b0000 : instruction_out4[26:22];
    mux_2 overflowctrl(ctrl_writeRegInt2, overflowMW, ctrl_writeRegInt, ctrl_writeRegMW);
    mux_2 setxctrl(ctrl_writeRegInt3, setxMW, ctrl_writeRegInt2, 5'b11110);
-   mux_2 getReadingmux(ctrl_writeRegInt4, instruction_out4==32'b1, ctrl_writeRegInt3, 5'b11001);
+   mux_2 getReadingmux(ctrl_writeRegInt4, instruction_out4[31:27]==5'b11111, ctrl_writeRegInt3, 5'b11001);
    
    mux_2 jal31write(ctrl_writeReg, jal, ctrl_writeRegInt4, 5'b11111);
    
@@ -366,13 +371,14 @@ module processor(
    mux_2 overflowdatadiv(data_writeRegInt4, (overflowMW && instruction_out4[31:27] == 5'b00000 && (instruction_out4[6:2] == 5'b00111)), data_writeRegInt3,  32'b00000000000000000000000000000101x);
 
    mux_2 setxctrdatal(data_writeRegInt5, setxMW, data_writeRegInt4, setxTarget);
-   mux_2 gerReeadingdatamux(data_writeRegInt6,  instruction_out4==32'b1, data_writeRegInt5, inputFromThermistor);
+   mux_2 gerReeadingdatamux(data_writeRegInt6,  instruction_out4[31:27]==5'b11111, data_writeRegInt5, thermistorVoltage);
    
    mux_2 jal31datawrite(data_writeReg, jal, data_writeRegInt6, (PCoutstart));
 
    assign out = ((instruction_out4[26:22] == 5'b10110) && (instruction_out4[31:27] == 5'b00101)) ? data_writeReg[0] : outInt; //if addi to r22, then set out to equal r22, else keep value of out
+   and outIntAnd(outInt, out, 1);
    
-   mux_2 outIntmux(outInt, out, 0, 1);
+   
    
    /* END CODE */
    
@@ -645,7 +651,12 @@ module mux_2(out, select, in0, in1);
    output [31:0] out;
    assign out = select ? in1:in0;
 endmodule // mux_2
-
+module mux_2one(out, select, in0, in1);
+   input select;
+   input  in0, in1;
+   output  out;
+   assign out = select ? in1:in0;
+endmodule // mux_2
 module mux_4(out, select, in0, in1, in2, in3);
    input[1:0] select;
    input [31:0] in0, in1, in2, in3;
