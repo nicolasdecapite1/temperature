@@ -9,3 +9,5 @@ multdiv.v
 multiplier.v
 processor.v
 regfile.v
+voltage.v
+voltage_tb.v
