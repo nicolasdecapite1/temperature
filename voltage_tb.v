@@ -1,4 +1,4 @@
-` `timescale 1 ns / 100 ps
+`timescale 1 ns / 100 ps
 module voltage_tb;
 
     reg input_voltage; // input
@@ -7,7 +7,7 @@ module voltage_tb;
     voltage voltage(.v_therm(input_voltage), .temp_therm(output_temp));
 
     // initialize
-    inital begin
+    begin
         input_voltage = 0;
 
         #80
@@ -15,7 +15,7 @@ module voltage_tb;
     end
 
     always 
-        #20 input_voltage += 0.25;
+        #20 input_voltage += 1;
 
     always @(input_voltage) begin
         #1;

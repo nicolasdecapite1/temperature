@@ -1,6 +1,6 @@
 module voltage(v_therm, temp_therm);
     input [7:0] v_therm;
-    output [7:0] temp_therm;
+    output [16:0] temp_therm;
 
     wire w1, w2, w3, w4, w5, w6, R, B, T0, R0;
     
@@ -8,7 +8,7 @@ module voltage(v_therm, temp_therm);
     assign R0 = 16'b0000011111010000;   // 2000 
     assign B = 16'b0000110111010011;   // 3539 , B
     assign w1 = 16'b10011100010000; //10000
-    assign w2 = 4'b11.01;   // 3.25 .. technically 3.3 tho
+    assign w2 = 4'b11_01;   // 3.25 .. technically 3.3 tho
 
     assign w3 = w1 / w2;
     assign w4 = v_therm / w2;
