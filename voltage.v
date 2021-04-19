@@ -23,12 +23,6 @@ module voltage(v_therm, temp_therm);
     assign q2 = $ln(q1);
     assign q3 = q2 / B;
     assign q4 = q3 + q5;
-    assign temp_therm = 1 / T0;
-
-
-
-//R = (10000 / 3.3)*(1 - V/3.3)*V
-// T = 1 / ((ln(R/R0) / B) + ( 1 / T0))
-// voltage from thermistor = 3.3(R thermistor) /(R thermistor + 10000)
+    assign temp_therm = 1 / T0; // T
 
 endmodule
