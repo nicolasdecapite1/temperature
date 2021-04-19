@@ -83,6 +83,13 @@ module processor(
 
    /* YOUR CODE STARTS HERE */
 
+
+   // calculate Temperature based on input voltage
+   output [15:0] temp_therm;
+   voltage voltage(.v_therm(thermistorVoltage), .temp_therm(temp_therm));
+
+
+
    //FETCH STAGE
    wire [31:0] 	 PC_plus1;
    wire [31:0] 	 O_out;
