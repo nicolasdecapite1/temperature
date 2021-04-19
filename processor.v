@@ -39,12 +39,33 @@ module processor(
     ctrl_readRegB,                  // O: Register to read from port B of RegFile
     data_writeReg,                  // O: Data to write to for RegFile
     data_readRegA,                  // I: Data from port A of RegFile
-    data_readRegB                   // I: Data from port B of RegFile
+    data_readRegB,
+    in0, in1, in2, in3, in4, in5, in6, in7, out, thermistorVoltage                   // I: Data from port B of RegFile
 	);
 
    // Control signals
-   input clock, reset;
-	
+   input clock, reset, in0, in1, in2, in3, in4, in5, in6, in7;
+   output out;
+   wire   outInt, outInt2;
+   output [31:0] thermistorVoltage;
+   
+   wire [31:0] inputFromThermistor;
+   
+   assign inputFromThermistor[7] = in7;
+   assign inputFromThermistor[6] = in6;
+   assign inputFromThermistor[5] = in5;
+   assign inputFromThermistor[4] = in4;
+   assign inputFromThermistor[3] = in3;
+   assign inputFromThermistor[2] = in2;
+   assign inputFromThermistor[1] = in1;
+   assign inputFromThermistor[0] = in0;
+   assign inputFromThermistor[31:8] = 24'b0;
+
+  
+   assign thermistorVoltage = (inputFromThermistor * 5) / 255;
+  // assign outInt =0;
+   
+   
    // Imem
    output [31:0] address_imem; //address of the PC (out of PC)
    input [31:0]  q_imem; //instruction at address of the PC (out of IMEM)
@@ -331,16 +352,17 @@ module processor(
    signExtenderTarget setxtargetextender(instruction_out4[26:0], setxTarget);
    
    assign isSWinst = (instruction_out4[31:27] == 5'b00111);
-   wire [31:0] 	 ctrl_writeRegInt, ctrl_writeRegInt2, ctrl_writeRegInt3;
+   wire [31:0] 	 ctrl_writeRegInt, ctrl_writeRegInt2, ctrl_writeRegInt3, ctrl_writeRegInt4;
    
    assign ctrl_writeRegInt = isSWinst? 5'b0000 : instruction_out4[26:22];
    mux_2 overflowctrl(ctrl_writeRegInt2, overflowMW, ctrl_writeRegInt, ctrl_writeRegMW);
    mux_2 setxctrl(ctrl_writeRegInt3, setxMW, ctrl_writeRegInt2, 5'b11110);
+   mux_2 getReadingmux(ctrl_writeRegInt4, instruction_out4[31:27]==5'b11111, ctrl_writeRegInt3, 5'b11001);
    
-   mux_2 jal31write(ctrl_writeReg, jal, ctrl_writeRegInt3, 5'b11111);
+   mux_2 jal31write(ctrl_writeReg, jal, ctrl_writeRegInt4, 5'b11111);
    
    //assign data_writeReg = isSWinst? D_out : O_out;
-   wire [31:0] 	 data_writeRegInt,data_writeRegInt2, data_writeRegInt3, data_writeRegInt4, data_writeRegInt5;
+   wire [31:0] 	 data_writeRegInt,data_writeRegInt2, data_writeRegInt3, data_writeRegInt4, data_writeRegInt5, data_writeRegInt6;
    
    
    mux_4 LWSW(data_writeRegInt, isLWSWinst, O_out, D_out, q_dmem, O_out);
@@ -349,8 +371,14 @@ module processor(
    mux_2 overflowdatadiv(data_writeRegInt4, (overflowMW && instruction_out4[31:27] == 5'b00000 && (instruction_out4[6:2] == 5'b00111)), data_writeRegInt3,  32'b00000000000000000000000000000101x);
 
    mux_2 setxctrdatal(data_writeRegInt5, setxMW, data_writeRegInt4, setxTarget);
-   mux_2 jal31datawrite(data_writeReg, jal, data_writeRegInt5, (PCoutstart));
+   mux_2 gerReeadingdatamux(data_writeRegInt6,  instruction_out4[31:27]==5'b11111, data_writeRegInt5, thermistorVoltage);
+   
+   mux_2 jal31datawrite(data_writeReg, jal, data_writeRegInt6, (PCoutstart));
 
+   assign out = ((instruction_out4[26:22] == 5'b10110) && (instruction_out4[31:27] == 5'b00101)) ? data_writeReg[0] : outInt; //if addi to r22, then set out to equal r22, else keep value of out
+   and outIntAnd(outInt, out, 1);
+   
+   
    
    /* END CODE */
    
@@ -623,7 +651,12 @@ module mux_2(out, select, in0, in1);
    output [31:0] out;
    assign out = select ? in1:in0;
 endmodule // mux_2
-
+module mux_2one(out, select, in0, in1);
+   input select;
+   input  in0, in1;
+   output  out;
+   assign out = select ? in1:in0;
+endmodule // mux_2
 module mux_4(out, select, in0, in1, in2, in3);
    input[1:0] select;
    input [31:0] in0, in1, in2, in3;

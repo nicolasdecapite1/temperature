@@ -44,14 +44,14 @@ div $r14, $r9, $r13
 mul $r15, $r14, $r11 # r15 holds V
 
 blt $r15, r20, turnHeaterOn
-bgt $r15, r21, turn HeaterOff
+blt $r15, r21, turn HeaterOff
 
 jump loop
  
 turnHeaterOn:
-# custom instruction to turn heater on
+addi $r22, r0, 1 #r22 will hold output signal
 jump loop
 
 turnHeaterOff:
-# custom instruction to turn heater off
+addi $r22, r0, 0 
 jump loop
