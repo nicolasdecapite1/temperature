@@ -1,0 +1,105 @@
+$date
+	Mon Apr 19 15:15:07 2021
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1ps
+$end
+$scope module voltage_tb $end
+$var wire 1 ! output_temp $end
+$var reg 4 " input_voltage [3:0] $end
+$scope module voltage $end
+$var wire 32 # B [31:0] $end
+$var wire 1 $ B2 $end
+$var wire 32 % R0 [31:0] $end
+$var wire 32 & T0 [31:0] $end
+$var wire 1 ' q5 $end
+$var wire 32 ( v_therm [31:0] $end
+$var wire 32 ) w1 [31:0] $end
+$var wire 32 * w2 [31:0] $end
+$var wire 32 + w6 [31:0] $end
+$var wire 32 , w5 [31:0] $end
+$var wire 32 - w4 [31:0] $end
+$var wire 32 . w3 [31:0] $end
+$var wire 32 / temp_therm [31:0] $end
+$var wire 1 0 q4 $end
+$var wire 1 1 q3 $end
+$var wire 1 2 q2 $end
+$var wire 1 3 q1 $end
+$var wire 32 4 R [31:0] $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+#0
+$dumpvars
+b0 4
+03
+x2
+x1
+x0
+b0 /
+b110100000101 .
+b0 -
+b1 ,
+b110100000101 +
+b11 *
+b10011100010000 )
+b0 (
+z'
+b11001 &
+b11111010000 %
+1$
+bz #
+b0 "
+0!
+$end
+#10000
+02
+13
+b110100000101 4
+b1 (
+b1 "
+#20000
+b1101000001010 4
+b10 (
+b10 "
+#30000
+b1101000001010 +
+b10 ,
+b1 -
+b100111000011110 4
+b11 (
+b11 "
+#40000
+b110100000101000 4
+b100 (
+b100 "
+#50000
+x2
+03
+b1000001000110010 4
+b101 (
+b101 "
+#60000
+02
+13
+b10011100001111 +
+b11 ,
+b10 -
+b1110101001011010 4
+b110 (
+b110 "
+#70000
+x2
+03
+b10001000101101001 4
+b111 (
+b111 "
+#80000
+02
+13
+b10011100001111000 4
+b1000 (
+b1000 "
