@@ -17,7 +17,13 @@ module voltage(v_therm, temp_therm);
 
     assign R = w6*v_therm; // R
 
-    
+    wire q1, q2, q3, q4, q5, q6;
+
+    assign q1 = R / R0;
+    assign q2 = $ln(q1);
+    assign q3 = q2 / B;
+    assign q4 = q3 + q5;
+    assign temp_therm = 1 / T0;
 
 
 
