@@ -1,5 +1,5 @@
 $date
-	Mon Apr 19 15:15:07 2021
+	Mon Apr 19 15:42:29 2021
 $end
 $version
 	Icarus Verilog
@@ -8,7 +8,7 @@ $timescale
 	1ps
 $end
 $scope module voltage_tb $end
-$var wire 1 ! output_temp $end
+$var wire 32 ! output_temp [31:0] $end
 $var reg 4 " input_voltage [3:0] $end
 $scope module voltage $end
 $var wire 32 # B [31:0] $end
@@ -16,7 +16,7 @@ $var wire 1 $ B2 $end
 $var wire 32 % R0 [31:0] $end
 $var wire 32 & T0 [31:0] $end
 $var wire 1 ' q5 $end
-$var wire 32 ( v_therm [31:0] $end
+$var wire 4 ( v_therm [3:0] $end
 $var wire 32 ) w1 [31:0] $end
 $var wire 32 * w2 [31:0] $end
 $var wire 32 + w6 [31:0] $end
@@ -53,53 +53,69 @@ b11111010000 %
 1$
 bz #
 b0 "
-0!
+b0 !
 $end
 #10000
 02
 13
+b10110 !
+b10110 /
 b110100000101 4
-b1 (
 b1 "
+b1 (
 #20000
+b101100 !
+b101100 /
 b1101000001010 4
-b10 (
 b10 "
+b10 (
 #30000
 b1101000001010 +
 b10 ,
 b1 -
+b10000101 !
+b10000101 /
 b100111000011110 4
-b11 (
 b11 "
+b11 (
 #40000
+b10110001 !
+b10110001 /
 b110100000101000 4
-b100 (
 b100 "
+b100 (
 #50000
 x2
 03
+b11011110 !
+b11011110 /
 b1000001000110010 4
-b101 (
 b101 "
+b101 (
 #60000
 02
 13
 b10011100001111 +
 b11 ,
 b10 -
+b110001111 !
+b110001111 /
 b1110101001011010 4
-b110 (
 b110 "
+b110 (
 #70000
 x2
 03
+b111010010 !
+b111010010 /
 b10001000101101001 4
-b111 (
 b111 "
+b111 (
 #80000
 02
 13
+b1000010101 !
+b1000010101 /
 b10011100001111000 4
-b1000 (
 b1000 "
+b1000 (

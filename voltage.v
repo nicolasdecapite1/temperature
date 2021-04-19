@@ -26,6 +26,6 @@ module voltage(v_therm, temp_therm);
     assign q2 = $ln(q1);
     assign q3 = q2 / B;
     assign q4 = q3 + q5;
-    assign temp_therm = 1 / T0; // T
-
+    // assign temp_therm = 1 / T0; // T
+    assign temp_therm = R / 150; // to at least have output
 endmodule

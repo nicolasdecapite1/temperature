@@ -1,8 +1,8 @@
 `timescale 1 ns / 100 ps
 module voltage_tb;
 
-    wire [3:0] input_voltage; // input
-    wire output_temp; // output
+    reg [3:0] input_voltage; // input
+    wire [31:0] output_temp; // output
 
     voltage voltage(.v_therm(input_voltage), .temp_therm(output_temp));
 
