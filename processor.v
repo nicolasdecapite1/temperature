@@ -40,7 +40,7 @@ module processor(
     data_writeReg,                  // O: Data to write to for RegFile
     data_readRegA,                  // I: Data from port A of RegFile
     data_readRegB,
-    in0, in1, in2, in3, in4, in5, in6, in7, out, thermistorVoltage                   // I: Data from port B of RegFile
+    in0, in1, in2, in3, in4, in5, in6, in7, out, thermistorVoltage, temp_therm                   // I: Data from port B of RegFile
 	);
 
    // Control signals
@@ -84,11 +84,9 @@ module processor(
    /* YOUR CODE STARTS HERE */
 
 
-   // calculate Temperature based on input voltage
-   output [15:0] temp_therm;
+   // calculate Temperature based on input voltage, put 
+   output [31:0] temp_therm;
    voltage voltage(.v_therm(thermistorVoltage), .temp_therm(temp_therm));
-
-
 
    //FETCH STAGE
    wire [31:0] 	 PC_plus1;
