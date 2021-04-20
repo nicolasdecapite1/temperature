@@ -8,6 +8,7 @@ divider.v
 multdiv.v
 multiplier.v
 processor.v
+real_div.v
 regfile.v
 voltage.v
 voltage_tb.v
