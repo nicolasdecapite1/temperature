@@ -45,6 +45,7 @@ module processor(
 
    // Control signals
    input clock, reset, in0, in1, in2, in3, in4, in5, in6, in7;
+   
    output out;
    wire   outInt, outInt2;
    wire [31:0] thermistorVoltage;
