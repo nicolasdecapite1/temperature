@@ -24,10 +24,12 @@
  *
  **/
 
-module Wrapper (clock, reset, in0, in1, in2, in3, in4, in5, in6, in7);
-   input clock, reset, in0, in1, in2, in3, in4, in5, in6, in7;
+module Wrapper (clock, reset, in0, in1, in2, in3, in4, in5, in6, in7, clkin, outSignal, clkout);
+   input clock, reset, in0, in1, in2, in3, in4, in5, in6, in7, clkin;
    wire     out;
+   output   outSignal, clkout;
    
+   assign clkout= clkin;
    
    wire       rwe, mwe;
    wire [4:0] rd, rs1, rs2;
@@ -75,5 +77,6 @@ module Wrapper (clock, reset, in0, in1, in2, in3, in4, in5, in6, in7);
 		.addr(memAddr[11:0]), 
 		.dataIn(memDataIn), 
 		.dataOut(memDataOut));
-
+   assign outSignal = out;
+   
 endmodule

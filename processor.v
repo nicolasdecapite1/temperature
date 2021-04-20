@@ -40,14 +40,14 @@ module processor(
     data_writeReg,                  // O: Data to write to for RegFile
     data_readRegA,                  // I: Data from port A of RegFile
     data_readRegB,
-    in0, in1, in2, in3, in4, in5, in6, in7, out, thermistorVoltage, temp_therm                   // I: Data from port B of RegFile
+    in0, in1, in2, in3, in4, in5, in6, in7, out                   // I: Data from port B of RegFile
 	);
 
    // Control signals
    input clock, reset, in0, in1, in2, in3, in4, in5, in6, in7;
    output out;
    wire   outInt, outInt2;
-   output [31:0] thermistorVoltage;
+   wire [31:0] thermistorVoltage;
    
    wire [31:0] inputFromThermistor;
    
@@ -85,9 +85,20 @@ module processor(
 
 
    // calculate Temperature based on input voltage, put 
-   output [31:0] temp_therm;
-   voltage voltage(.v_therm(thermistorVoltage), .temp_therm(temp_therm));
-
+   wire [31:0] temp_therm;
+   wire  [31:0]      temp_thermInt, temp_thermInt1, temp_thermInt2;
+   
+   //voltage voltage(.v_therm(thermistorVoltage), .temp_therm(temp_therm));
+ 
+  
+   
+   assign temp_thermInt = (thermistorVoltage[1:0] == 2'b11) ? 32'd26 : 32'd0;
+   
+   assign temp_thermInt1 = (thermistorVoltage[1:0]==2'b10) ? 32'd25 : temp_thermInt;
+   assign temp_thermInt2 = (thermistorVoltage[1:0] ==2'b01) ? 32'd23 : temp_thermInt1;
+   assign temp_therm = temp_thermInt2;
+   
+   
    //FETCH STAGE
    wire [31:0] 	 PC_plus1;
    wire [31:0] 	 O_out;
@@ -376,7 +387,7 @@ module processor(
    mux_2 overflowdatadiv(data_writeRegInt4, (overflowMW && instruction_out4[31:27] == 5'b00000 && (instruction_out4[6:2] == 5'b00111)), data_writeRegInt3,  32'b00000000000000000000000000000101x);
 
    mux_2 setxctrdatal(data_writeRegInt5, setxMW, data_writeRegInt4, setxTarget);
-   mux_2 gerReeadingdatamux(data_writeRegInt6,  instruction_out4[31:27]==5'b11111, data_writeRegInt5, thermistorVoltage);
+   mux_2 gerReeadingdatamux(data_writeRegInt6,  instruction_out4[31:27]==5'b11111, data_writeRegInt5, temp_therm);
    
    mux_2 jal31datawrite(data_writeReg, jal, data_writeRegInt6, (PCoutstart));
 
