@@ -40,7 +40,7 @@ module processor(
     data_writeReg,                  // O: Data to write to for RegFile
     data_readRegA,                  // I: Data from port A of RegFile
     data_readRegB,
-    in0, in1, in2, in3, in4, in5, in6, in7, out                   // I: Data from port B of RegFile
+    in0, in1, in2, in3, in4, in5, in6, in7, out, temp_therm                   // I: Data from port B of RegFile
 	);
 
    // Control signals
@@ -86,7 +86,7 @@ module processor(
 
 
    // calculate Temperature based on input voltage, put 
-   wire [31:0] temp_therm;
+   output [31:0] temp_therm;
    wire  [31:0]      temp_thermInt, temp_thermInt1, temp_thermInt2;
    
    //voltage voltage(.v_therm(thermistorVoltage), .temp_therm(temp_therm));

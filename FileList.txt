@@ -12,3 +12,4 @@ real_div.v
 regfile.v
 voltage.v
 voltage_tb.v
+VGAController.v
