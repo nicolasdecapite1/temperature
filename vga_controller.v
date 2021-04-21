@@ -1,9 +1,9 @@
-module vga_controller(clock, reset, in0, in1, in2, in3, in4, in5, in6, in7, clkin, clkout, outSignal, out_cathode, anode);
+module vga_controller(clock, reset, in0, in1, in2, in3, in4, in5, in6, in7, clkin, clkout, outSignal, out_cathode, out_anode);
     input clock, reset, clkin, in0, in1, in2, in3, in4, in5, in6, in7;
-    output clkout, outSignal, A, B, C, D, E, F, G;
+    output clkout, outSignal;
 
     wire [31:0] data_temp;
-    Wrapper wrapper(.clock(clock), .reset(reset), .in0(in0), .in1(in1), .in2(in2), .in3(in3), .in4(in4), .in5(in5), .in6(in6), .in7(in7), .clkin(clkin), .outSignal(outSignal), .clkout(clkout), .data_out(data_temp));
+    Wrapper wrapper(.clock(clock), .reset(reset), .in0(in0), .in1(in1), .in2(in2), .in3(in3), .in4(in4), .in5(in5), .in6(in6), .in7(in7), .clkin(clkin), .outSignal(outSignal), .clkout(clkout), .temp_out(data_temp));
 
 
 
@@ -33,29 +33,13 @@ module vga_controller(clock, reset, in0, in1, in2, in3, in4, in5, in6, in7, clki
         endcase
     end
 
-    wire [6:0] out_cathodeA, out_cathodeB;
-    reg [6:0] curr_cathode;
-    reg [1:0] curr_anode;
-    output [1:0] anode;
+
+ 
+    output [7:0] out_anode;
     output [6:0] out_cathode;
 
-    assign out_cathodeA = cathodeA;
-    assign out_cathodeB = cathodeB;
-
-    assign out_cathode = curr_cathode;
-    assign out_anode = curr_anode;
-
-    always @(posedge clock)
-    begin
-        curr_cathode = out_cathodeA;
-        curr_anode = 2'b10;
-    end
-
-    always @(negedge clock)
-    begin
-        curr_cathode = out_cathodeB;
-        curr_anode = 2'b01;
-    end
+    assign out_cathode = clock ? cathodeA : cathodeB; 
+    assign out_anode = clock ? 7'b01111111 : 7'b10111111;
 
     
     
